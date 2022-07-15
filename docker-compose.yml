@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  node-docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/usr/src/app/src
+    container_name: node-app
+    command: npm run start:dev
+    ports:
+     - "${PORT}:${PORT}"
+    env_file:
+      - ./.env
+    environment:
+      - MIN_MOVIE_COUNT=${MIN_MOVIE_COUNT}
+      - MAX_MOVIE_COUNT=${MAX_MOVIE_COUNT}
