@@ -1,6 +1,7 @@
-import { Country, Genre } from '../types/movies';
+import { Country, Genre } from '../types';
 
 export class CreateMovieDto {
+  id: string;
   director: string;
   genres: Genre[];
   title: string;

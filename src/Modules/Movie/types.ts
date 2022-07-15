@@ -13,6 +13,7 @@ export enum Country {
 }
 
 export interface IMovie {
+  id: string;
   director: string;
   genres: Genre[];
   title: string;

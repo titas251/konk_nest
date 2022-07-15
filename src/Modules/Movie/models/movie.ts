@@ -1,10 +1,12 @@
 import { faker } from '@faker-js/faker';
-import { IMovie, Genre, Country } from '../types/movies';
+import { IMovie, Genre, Country } from '../types';
+import { v4 as uuidv4 } from 'uuid';
 
 const allGenres: Genre[] = [Genre.DRAMA, Genre.ACTION, Genre.FANTASY];
 const allCountries: Country[] = [Country.US, Country.UK, Country.FRANCE];
 
 export class Movie implements IMovie {
+  public id: IMovie['id'];
   public director: IMovie['director'];
   public genres: IMovie['genres'];
   public title: IMovie['title'];
@@ -12,13 +14,14 @@ export class Movie implements IMovie {
   public duration: IMovie['duration'];
   public rating: IMovie['rating'];
 
-  constructor({ director, genres, title, country, duration, rating }: IMovie) {
-    this.director = director;
-    this.genres = genres;
-    this.title = title;
-    this.country = country;
-    this.duration = duration;
-    this.rating = rating;
+  constructor(movie: IMovie) {
+    this.id = movie.id;
+    this.director = movie.director;
+    this.genres = movie.genres;
+    this.title = movie.title;
+    this.country = movie.country;
+    this.duration = movie.duration;
+    this.rating = movie.rating;
   }
 
   static create({
@@ -37,6 +40,7 @@ export class Movie implements IMovie {
     rating?: IMovie['rating'];
   }) {
     return new this({
+      id: this.RandomId,
       director: director || this.RandomDirectorName,
       genres: genres || this.RandomGenres,
       title: title || this.RandomTitle,
@@ -71,5 +75,9 @@ export class Movie implements IMovie {
       min: 30,
       max: 200,
     });
+  }
+
+  private static get RandomId(): IMovie['id'] {
+    return uuidv4();
   }
 }

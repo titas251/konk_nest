@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 import { Movie } from './models/movie';
-import { IMovie } from './types/movies';
+import { IMovie } from './types';
 
 @Injectable()
-export class MoviesService {
+export class MoviesRepository {
   private moviesStorage = [
     ...Array(
       faker.datatype.number({
@@ -14,8 +14,8 @@ export class MoviesService {
     ),
   ].map(() => Movie.create({}));
 
-  public getMovie(title: string) {
-    return this.moviesStorage.find((movie) => movie.title === title);
+  public getMovie(id: string) {
+    return this.moviesStorage.find((movie) => movie.id === id);
   }
 
   public getMovies() {
@@ -24,17 +24,17 @@ export class MoviesService {
 
   public createMovie(movie: IMovie) {
     const createdMovie = Movie.create(movie);
-    this.moviesStorage.push(createdMovie);
+    this.moviesStorage.push(Movie.create(movie));
 
     return createdMovie;
   }
 
-  public deleteMovie(title: string) {
-    const deletedMovie = this.getMovie(title);
+  public deleteMovie(id: string): IMovie {
+    const deletedMovie = this.getMovie(id);
     if (deletedMovie !== undefined) {
-      this.moviesStorage = this.moviesStorage.filter((movie) => movie.title !== deletedMovie.title);
+      this.moviesStorage = this.moviesStorage.filter((movie) => movie.id !== deletedMovie.id);
       return deletedMovie;
     }
-    return;
+    return <IMovie>{};
   }
 }
