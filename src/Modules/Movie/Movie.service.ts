@@ -1,24 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { IMovie } from './types';
-import { MoviesRepository } from './Movie.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Movie } from './Movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Injectable()
 export class MoviesService {
-  constructor(private moviesRepository: MoviesRepository) {}
+  constructor(
+    @InjectRepository(Movie)
+    private moviesRepository: Repository<Movie>,
+  ) {}
 
-  public getMovie(id: string) {
-    return this.moviesRepository.getMovie(id);
+  findAll() {
+    return this.moviesRepository.find();
   }
 
-  public getMovies() {
-    return this.moviesRepository.getMovies();
+  findOne(id: string) {
+    return this.moviesRepository.findOneBy({ id });
   }
 
-  public createMovie(movie: IMovie) {
-    return this.moviesRepository.createMovie(movie);
+  async create(movie: CreateMovieDto) {
+    const newMovie = this.moviesRepository.create(movie);
+    await this.moviesRepository.save(newMovie);
+
+    return newMovie;
   }
 
-  public deleteMovie(id: string) {
-    return this.moviesRepository.deleteMovie(id);
+  async remove(id: string) {
+    return await this.moviesRepository.delete(id);
   }
 }

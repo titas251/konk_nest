@@ -1,14 +1,11 @@
 version: '3.7'
 
 services:
-  node-docker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: base
+  backend:
+    build: .
+    container_name: node_backend
     volumes:
       - ./src:/usr/src/app/src
-    container_name: node-app
     command: npm run start:dev
     ports:
      - "${PORT}:${PORT}"
@@ -17,3 +14,18 @@ services:
     environment:
       - MIN_MOVIE_COUNT=${MIN_MOVIE_COUNT}
       - MAX_MOVIE_COUNT=${MAX_MOVIE_COUNT}
+  mysql:
+    container_name: ${MYSQL_HOST}
+    restart: always
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+
+
+networks:
+  default:
+    external:
+      name: movie_app

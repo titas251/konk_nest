@@ -8,22 +8,22 @@ export class MoviesController {
   constructor(private moviesService: MoviesService) {}
 
   @Post()
-  async create(@Body() createMovieDto: CreateMovieDto): Promise<IMovie> {
-    return this.moviesService.createMovie(createMovieDto);
+  create(@Body() createMovieDto: CreateMovieDto) {
+    return this.moviesService.create(createMovieDto);
   }
 
   @Get()
-  async findAll(): Promise<IMovie[]> {
-    return this.moviesService.getMovies();
+  findAll() {
+    return this.moviesService.findAll();
   }
 
   @Get(':id')
-  async find(@Param() params): Promise<IMovie> {
-    return this.moviesService.getMovie(params.id);
+  find(@Param() params) {
+    return this.moviesService.findOne(params.id);
   }
 
   @Delete(':id')
-  async delete(@Param() params): Promise<IMovie> {
-    return this.moviesService.deleteMovie(params.id);
+  delete(@Param() params) {
+    return this.moviesService.remove(params.id);
   }
 }

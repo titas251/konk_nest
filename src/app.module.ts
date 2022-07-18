@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import { MoviesController } from './Modules/Movie/Movie.controller';
-import { MoviesRepository } from './Modules/Movie/Movie.repository';
-import { MoviesService } from './Modules/Movie/Movie.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Movie } from './Modules/Movie/Movie.entity';
+import { MovieModule } from './Modules/Movie/Movie.module';
 
 @Module({
-  controllers: [MoviesController],
-  providers: [MoviesService, MoviesRepository],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.MYSQL_HOST,
+      port: parseInt(process.env.MYSQL_PORT),
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      entities: [Movie],
+      synchronize: true,
+    }),
+    MovieModule,
+  ],
 })
 export class AppModule {}
