@@ -1,4 +1,5 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Author } from '../Author/Author.entity';
 import { Country } from './types';
 
 @Entity('movie')
@@ -20,4 +21,7 @@ export class Movie extends BaseEntity {
 
   @Column()
   rating: number;
+
+  @OneToMany(() => Author, (author) => author.movie)
+  authors: Author[];
 }

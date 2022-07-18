@@ -1,11 +1,12 @@
-import { Country, Genre } from '../types';
+import { Author } from 'src/Modules/Author/Author.entity';
+import { Country } from '../types';
 
 export class CreateMovieDto {
   id: string;
   director: string;
-  genres: Genre[];
   title: string;
   country: Country;
   duration: number;
   rating: number;
+  authors: Author[];
 }

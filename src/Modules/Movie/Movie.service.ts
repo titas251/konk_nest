@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './Movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { Author } from '../Author/Author.entity';
 
 @Injectable()
 export class MoviesService {
@@ -19,11 +20,9 @@ export class MoviesService {
     return this.moviesRepository.findOneBy({ id });
   }
 
-  async create(movie: CreateMovieDto) {
+  create(movie: CreateMovieDto) {
     const newMovie = this.moviesRepository.create(movie);
-    await this.moviesRepository.save(newMovie);
-
-    return newMovie;
+    return this.moviesRepository.save(newMovie);
   }
 
   async remove(id: string) {
