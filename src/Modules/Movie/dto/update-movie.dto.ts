@@ -1,33 +1,26 @@
-import { Author } from 'src/Modules/Author/Author.entity';
 import { Country } from '../types';
 import { Min, Max, IsEnum, IsString, IsNotEmpty, IsNumber, IsArray, IsOptional, IsInt } from 'class-validator';
 
-export class CreateMovieDto {
+export class UpdateMovieDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   director: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   title: string;
 
   @IsEnum(Country)
-  @IsNotEmpty()
+  @IsOptional()
   country: Country;
 
-  @IsInt()
-  @IsNotEmpty()
   @Min(30)
   @Max(300)
+  @IsOptional()
   duration: number;
 
-  @IsNumber()
-  @IsNotEmpty()
   @Min(1)
   @Max(10)
-  rating: number;
-
-  @IsArray()
   @IsOptional()
-  authors: Author[];
+  rating: number;
 }

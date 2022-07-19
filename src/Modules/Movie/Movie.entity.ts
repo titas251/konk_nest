@@ -1,4 +1,13 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { Author } from '../Author/Author.entity';
 import { Country } from './types';
 
@@ -21,6 +30,22 @@ export class Movie extends BaseEntity {
 
   @Column()
   rating: number;
+
+  @CreateDateColumn({
+    name: 'created_at',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    name: 'deleted_at',
+    nullable: true,
+  })
+  deletedAt?: Date;
 
   @OneToMany(() => Author, (author) => author.movie, {
     cascade: ['insert'],

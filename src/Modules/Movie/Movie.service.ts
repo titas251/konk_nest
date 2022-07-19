@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Movie } from './Movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { Author } from '../Author/Author.entity';
+import { UpdateMovieDto } from './dto/update-movie.dto';
+import { string } from 'yup/lib/locale';
 
 @Injectable()
 export class MoviesService {
@@ -23,6 +25,10 @@ export class MoviesService {
   create(movie: CreateMovieDto) {
     const newMovie = this.moviesRepository.create(movie);
     return this.moviesRepository.save(newMovie);
+  }
+
+  update(id: string, movie: UpdateMovieDto) {
+    return this.moviesRepository.save({ id, ...movie });
   }
 
   async remove(id: string) {
