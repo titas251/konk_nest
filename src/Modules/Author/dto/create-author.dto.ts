@@ -1,5 +1,11 @@
+import { IsString, IsNotEmpty, IsInt } from 'class-validator';
+
 export class CreateAuthorDto {
-  id: string;
+  @IsString()
+  @IsNotEmpty()
   name: string;
+
+  @IsInt()
+  @IsNotEmpty()
   age: number;
 }

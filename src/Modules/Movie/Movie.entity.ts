@@ -22,6 +22,8 @@ export class Movie extends BaseEntity {
   @Column()
   rating: number;
 
-  @OneToMany(() => Author, (author) => author.movie)
+  @OneToMany(() => Author, (author) => author.movie, {
+    cascade: ['insert'],
+  })
   authors: Author[];
 }

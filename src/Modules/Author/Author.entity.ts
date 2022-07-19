@@ -12,7 +12,7 @@ export class Author extends BaseEntity {
   @Column()
   age: number;
 
-  @ManyToOne(() => Movie, (movie) => movie.authors)
+  @ManyToOne(() => Movie, (movie) => movie.authors, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'movie_id' })
   movie: Movie;
 }
