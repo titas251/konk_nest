@@ -6,14 +6,15 @@ export class CreateMovieGuard implements CanActivate {
   constructor(private readonly authorService: AuthorService) {}
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const request = ctx.switchToHttp().getRequest();
-    if (this.validateReq(request) === true) {
+    if (this.validateReq(request)) {
       try {
-        if (request.body.author_id !== undefined) {
-          const existingAuthor = await this.authorService.findOneOrFail(request.body.author_id);
+        const { authorId } = request.body;
+        if (authorId !== undefined) {
+          const existingAuthor = await this.authorService.findOneOrFail(authorId);
           request.body.authors = [];
           request.body.authors.push(existingAuthor);
         }
-      } catch (err) {
+      } catch {
         throw new HttpException('Author not found', HttpStatus.NOT_FOUND);
       }
       return true;

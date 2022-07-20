@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param, Delete, Patch, UseGuards, Res } from '@nestjs/common';
 import { AuthorService } from '../Author/Author.service';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
-import { CreateMovieGuard } from './guards/create-movie.guard';
+import { CreateMovieDto } from './dto/CreateMovie.dto';
+import { UpdateMovieDto } from './dto/UpdateMovie.dto';
+import { CreateMovieGuard } from './guards/CreateMovie.guard';
 import { MoviesService } from './Movie.service';
 import { IMovie } from './types';
 

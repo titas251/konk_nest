@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from './Movie.entity';
-import { CreateMovieDto } from './dto/create-movie.dto';
+import { CreateMovieDto } from './dto/CreateMovie.dto';
 import { Author } from '../Author/Author.entity';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { UpdateMovieDto } from './dto/UpdateMovie.dto';
 import { string } from 'yup/lib/locale';
 
 @Injectable()

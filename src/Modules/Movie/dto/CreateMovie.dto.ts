@@ -29,5 +29,5 @@ export class CreateMovieDto {
 
   @IsString()
   @IsOptional()
-  author_id?: string;
+  authorId?: string;
 }
