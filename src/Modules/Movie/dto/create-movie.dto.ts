@@ -27,7 +27,7 @@ export class CreateMovieDto {
   @Max(10)
   rating: number;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  authors: Author[];
+  author_id?: string;
 }

@@ -47,8 +47,6 @@ export class Movie extends BaseEntity {
   })
   deletedAt?: Date;
 
-  @OneToMany(() => Author, (author) => author.movie, {
-    cascade: ['insert'],
-  })
+  @OneToMany(() => Author, (author) => author.movie)
   authors: Author[];
 }
