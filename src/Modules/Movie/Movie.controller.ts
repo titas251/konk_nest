@@ -1,13 +1,28 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, UseGuards, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  UseGuards,
+  Inject,
+  CACHE_MANAGER,
+  UseInterceptors,
+  CacheInterceptor,
+  CacheTTL,
+  CacheKey,
+} from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { CreateMovieDto } from './dto/CreateMovie.dto';
 import { UpdateMovieDto } from './dto/UpdateMovie.dto';
 import { CreateMovieGuard } from './guards/CreateMovie.guard';
 import { MoviesService } from './Movie.service';
-import { IMovie } from './types';
 
 @Controller('movies')
 export class MoviesController {
-  constructor(private moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService, @Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   @Post()
   @UseGuards(CreateMovieGuard)
@@ -21,13 +36,29 @@ export class MoviesController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(20)
   findAll() {
     return this.moviesService.findAll();
   }
 
   @Get(':id')
-  find(@Param() params) {
-    return this.moviesService.findOne(params.id);
+  async find(@Param() params) {
+    const cachedMovie = await this.cacheManager.get('cached_movie');
+    if (!cachedMovie) {
+      const movie = await this.moviesService.findOne(params.id);
+      await this.cacheManager.set('cached_movie', movie, { ttl: 20 });
+
+      return {
+        movie,
+        cached: false,
+      };
+    }
+
+    return {
+      movie: cachedMovie,
+      cached: true,
+    };
   }
 
   @Delete(':id')

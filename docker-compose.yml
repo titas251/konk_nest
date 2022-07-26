@@ -14,6 +14,9 @@ services:
     environment:
       - MIN_MOVIE_COUNT=${MIN_MOVIE_COUNT}
       - MAX_MOVIE_COUNT=${MAX_MOVIE_COUNT}
+    networks:
+      - movie_app_backend
+    
   mysql:
     container_name: ${MYSQL_HOST}
     restart: always
@@ -23,9 +26,27 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - ${MYSQL_PORT}:${MYSQL_PORT}
+    networks:
+      - movie_app_backend
 
+  redis:
+    container_name: ${REDIS_HOST}
+    image: redis:latest
+    env_file: .env
+    logging:
+      driver: 'none'
+    command: 'redis-server --requirepass ${REDIS_PASSWORD} --notify-keyspace-events Ex --appendonly yes'
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT} 
+    volumes:
+      - redis-data:/data
+    networks:
+      - movie_app_backend
+
+volumes:
+  redis-data:
 
 networks:
-  default:
-    external:
-      name: movie_app
+  movie_app_backend:
+    name: movie_app_backend
+    driver: bridge
